@@ -80,5 +80,5 @@ Após compilar o projeto e configurar as variáveis de ambiente:
 
 ## 🚀 Comandos Implementados (Beta 0.1)
 
-* `/ping`: Responde "Pong!" e mostra a latência da gateway do bot.
+* `/ping`: Responde "Pong!" e mostra a latência do gateway do bot.
 ---
