@@ -11,6 +11,7 @@ Um bot simples e modular para Discord construído com JDA 5.
 * Registro automático de Slash Commands em um servidor de teste específico durante a inicialização (`onReady`).
 * Manipulador básico para executar a lógica dos comandos Slash (`SlashCommandListener`).
 * Comando de exemplo: `/ping` para verificar a latência do bot.
+* Configuração via arquivo `config.properties` e variáveis de ambiente.
 * Configuração de Log usando Logback (`logback.xml`).
 
 ## ⚙️ Requisitos
@@ -22,13 +23,19 @@ Um bot simples e modular para Discord construído com JDA 5.
 
 ## 🔧 Configuração
 
-Antes de rodar o bot, você **precisa** configurar a seguinte variável de ambiente:
+Antes de rodar o bot, você precisa configurar o seguinte:
 
-1.  **`DISCORD_BOT_TOKEN`**: Defina esta variável com o token secreto do seu bot obtido no Portal de Desenvolvedores do Discord.
+1.  **Token do Bot (Variável de Ambiente):**
+    * Defina a variável de ambiente `DISCORD_BOT_TOKEN` com o token secreto do seu bot obtido no Portal de Desenvolvedores do Discord.
     * *Exemplo Linux/macOS:* `export DISCORD_BOT_TOKEN="SEU_TOKEN_AQUI"`
     * *Exemplo Windows (cmd):* `set DISCORD_BOT_TOKEN=SEU_TOKEN_AQUI`
     * *Exemplo Windows (PowerShell):* `$env:DISCORD_BOT_TOKEN="SEU_TOKEN_AQUI"`
-    * Consulte a documentação do seu sistema operacional para defini-la permanentemente ou configure-a na sua IDE. **NUNCA coloque o token diretamente no código!**
+    * Consulte a documentação do seu sistema operacional para defini-la permanentemente ou configure-a na sua IDE. **NUNCA coloque o token diretamente no código ou no arquivo `config.properties`!**
+
+2.  **Arquivo de Configuração (`config.properties`):**
+    * Na raiz do projeto, você encontrará um arquivo chamado `config.properties.example`.
+    * **Copie** este arquivo e renomeie a cópia para `config.properties`.
+    * **Edite** o arquivo `config.properties` e preencha os valores necessários de acordo com os comentários no arquivo (ex: `test.guild.id`).
 
 ## 🛠️ Compilando (Build)
 
@@ -68,6 +75,7 @@ Após compilar o projeto e configurar as variáveis de ambiente:
         * `CommandHandler.java`: Responsável por carregar e registrar os comandos.
 * `src/main/resources`: Contém arquivos de recursos.
     * `logback.xml`: Configuração de log.
+    * `config.properties`: Arquivo de configuração.
 * `pom.xml`: Arquivo de configuração do build tool.
 
 ## 🚀 Comandos Implementados (Beta 0.1)
