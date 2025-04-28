@@ -18,12 +18,14 @@ import java.util.concurrent.ConcurrentMap;
 public class CommandHandler {
     // Cria uma Lista para serem adicionados os comandos
     public ConcurrentMap<String, AbstractCommand> commandRegistry;
+    private final boolean TEST_MODE;
+    private final String TEST_GUILD_ID;
     public List<SlashCommandData> slashCommandDatas = new ArrayList<>();
-    private static final String TEST_GUILD_ID = System.getenv().getOrDefault("TEST_GUILD_ID", "720086666890706996");
-    private static final Boolean TEST_MODE = Boolean.valueOf(System.getenv().getOrDefault("TEST_MODE",  "true"));
 
-    public CommandHandler(ConcurrentMap<String, AbstractCommand> commandRegistry){
+    public CommandHandler(ConcurrentMap<String, AbstractCommand> commandRegistry, boolean TEST_MODE, String TEST_GUILD_ID){
         this.commandRegistry = commandRegistry;
+        this.TEST_MODE = TEST_MODE;
+        this.TEST_GUILD_ID = TEST_GUILD_ID;
     }
 
     /**
@@ -73,6 +75,10 @@ public class CommandHandler {
         }
 
         if(TEST_MODE){
+            if(TEST_GUILD_ID == null){
+                System.err.println("CommandHandler -> TEST_MODE habilitado, porém, TEST_GUILD_ID não foi definido. Não foi possível registrar comandos de guilda.");
+                return;
+            }
             Guild testGuild = jda.getGuildById(TEST_GUILD_ID);
 
             if (testGuild == null) {

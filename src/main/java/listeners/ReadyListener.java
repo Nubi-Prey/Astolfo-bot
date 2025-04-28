@@ -14,10 +14,11 @@ import handlers.CommandHandler;
 public class ReadyListener extends ListenerAdapter {
 
     private final CommandHandler commandHandler;
-    private static final Boolean UPDATE_COMMANDS_ON_READY = Boolean.valueOf(System.getenv().getOrDefault("UPDATE_COMMANDS_ON_READY",  "true"));
+    private final Boolean UPDATE_COMMANDS_ON_READY;
 
-    public ReadyListener(CommandHandler commandHandler) {
+    public ReadyListener(CommandHandler commandHandler, boolean UPDATE_COMMANDS_ON_READY) {
         this.commandHandler = commandHandler;
+        this.UPDATE_COMMANDS_ON_READY = UPDATE_COMMANDS_ON_READY;
     }
 
     @Override

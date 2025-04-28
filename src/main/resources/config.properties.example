@@ -1,0 +1,12 @@
+# Arquivo de configuração principal para o AstolfoBot
+
+# --- Configurações de Teste ---
+# Habilita/desabilita o modo de teste (registra comandos apenas na guilda de teste)
+test.mode=true
+# ID da Guilda (Servidor) usada para registrar comandos em modo de teste
+test.guild.id=1234567891011
+
+# --- Configurações de Inicialização ---
+# Define se os comandos devem ser atualizados no Discord na inicialização (onReady)
+# Padrão: true
+update.commands.on.ready=true
