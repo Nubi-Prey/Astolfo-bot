@@ -51,6 +51,8 @@ public class CommandHandler {
                 AbstractCommand instance = cmdClass.getDeclaredConstructor().newInstance();
                 String commandName = cmdClass.getSimpleName().toLowerCase();
 
+                if(!instance.isEnabled()) continue;
+
                 commandRegistry.put(commandName, instance);
                 slashCommandDatas.add(instance.getCommandData());
 

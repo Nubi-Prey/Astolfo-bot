@@ -8,6 +8,10 @@ import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
  */
 public abstract class AbstractCommand {
 
+    public Boolean isEnabled(){
+        return true;
+    };
+
     /**
      * Responsável por descrever as informações necessárias para o comando.
      * @return SlashCommandData
