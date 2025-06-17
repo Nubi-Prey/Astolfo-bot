@@ -4,6 +4,8 @@ target/
 !**/src/test/**/target/
 
 config.properties
+/.env.development
+/dependency-reduced-pom.xml
 
 ### IntelliJ IDEA ###
 .idea
