@@ -7,7 +7,7 @@ import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 /**
  * Mostra a latência do bot
  */
-public class ping extends AbstractCommand{
+public class Ping extends AbstractCommand{
 
     @Override
     public SlashCommandData getCommandData(){
