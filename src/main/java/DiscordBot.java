@@ -2,8 +2,11 @@ import commands.AbstractCommand;
 import handlers.CommandHandler;
 import listeners.ReadyListener;
 import listeners.SlashCommandListener;
+import listeners.GuildMemberJoinListener;
+
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,8 +20,7 @@ import java.util.concurrent.ConcurrentMap;
 public class DiscordBot
 {
     public static void main(String[] args)
-            throws InterruptedException
-    {
+            throws InterruptedException, ClassNotFoundException {
         // Procura o Token nas variáveis de ambiente
         String token = System.getenv("DISCORD_BOT_TOKEN");
 
@@ -32,10 +34,9 @@ public class DiscordBot
         try(InputStream input = DiscordBot.class.getClassLoader().getResourceAsStream("config.properties")) {
             if(input == null){
                 System.err.println("Não foi possível encontrar o arquivo de configuração config.properties. Iniciando com configurações padrão.");
-                return;
+            } else {
+                props.load(input);
             }
-
-            props.load(input);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -43,6 +44,7 @@ public class DiscordBot
 
         String TEST_GUILD_ID = props.getProperty("test.guild.id");
         boolean TEST_MODE = Boolean.parseBoolean(props.getProperty("test.mode", "false"));
+        boolean UPDATE_DATABASE_ON_READY = Boolean.parseBoolean(props.getProperty("update.database.on.ready", "true"));
         boolean UPDATE_COMMANDS_ON_READY = Boolean.parseBoolean(props.getProperty("update.commands.on.ready", "true"));
 
         // Inicializa um cache para os comandos
@@ -51,14 +53,17 @@ public class DiscordBot
         CommandHandler commandHandler = new CommandHandler(commandRegistry, TEST_MODE, TEST_GUILD_ID);
 
         // Instancia os Listeners com o cache de comandos
-        ReadyListener readyListener = new ReadyListener(commandHandler, UPDATE_COMMANDS_ON_READY);
+        ReadyListener readyListener = new ReadyListener(commandHandler, UPDATE_COMMANDS_ON_READY, UPDATE_DATABASE_ON_READY);
         SlashCommandListener slashCommandListener = new SlashCommandListener(commandRegistry, TEST_MODE, TEST_GUILD_ID);
 
-        JDA jda = JDABuilder.createLight(token)
+
+        JDA jda = JDABuilder.createDefault(token)
                 .addEventListeners(
                         readyListener,
-                        slashCommandListener
+                        slashCommandListener,
+                        new GuildMemberJoinListener()
                 )
+                .enableIntents(GatewayIntent.GUILD_MEMBERS)
                 .build();
 
         jda.awaitReady();
