@@ -1,84 +1,95 @@
-# AstolfoBot (Beta 0.1)
+# AstolfoBot
 
-Um bot simples e modular para Discord construído com JDA 5.
+Um bot modular para Discord construído com JDA 5, com banco de dados local gerenciado por Docker e PostgreSQL.
 
-**Versão Atual:** Beta 0.1 (28 de Abril de 2025)
+**Versão Atual:** Beta 0.2 (17 de Junho de 2025)
 
-## ✨ Funcionalidades (Beta 0.1)
+## ✨ Funcionalidades
 
-* Conexão com a API do Discord usando JDA.
-* Carregamento dinâmico de Slash Commands a partir do pacote `commands`.
-* Registro automático de Slash Commands em um servidor de teste específico durante a inicialização (`onReady`).
-* Manipulador básico para executar a lógica dos comandos Slash (`SlashCommandListener`).
-* Comando de exemplo: `/ping` para verificar a latência do bot.
-* Configuração via arquivo `config.properties` e variáveis de ambiente.
-* Configuração de Log usando Logback (`logback.xml`).
+*   Conexão com a API do Discord usando JDA 5.
+*   Infraestrutura de banco de dados (PostgreSQL) gerenciada via Docker Compose.
+*   Carregamento dinâmico de Slash Commands.
+*   Configuração flexível para dados não-sensíveis (`config.properties`).
+*   Logging configurado com Logback.
 
 ## ⚙️ Requisitos
 
-* **JDK (Java Development Kit):** Versão 17 ou superior é recomendada (JDA 5 requer Java 11+, mas funcionalidades mais recentes podem usar versões superiores).
-* **Maven:** Para gerenciar dependências e compilar o projeto.
-* **Conta Discord e Bot Application:** Você precisará criar uma aplicação de bot no [Portal de Desenvolvedores do Discord](https://discord.com/developers/applications).
-* **Token do Bot:** O token de autenticação do seu bot.
+*   **JDK (Java Development Kit):** Versão 17 ou superior.
+*   **Maven:** Para gerenciamento de dependências e build do projeto.
+*   **Docker:** Para executar e gerenciar a infraestrutura do banco de dados.
+*   **Conta Discord e Bot Application:** Necessária para obter o token do bot.
 
-## 🔧 Configuração
+## 🔧 Configuração Inicial
 
-Antes de rodar o bot, você precisa configurar o seguinte:
+A configuração do projeto é dividida em duas partes: a **infraestrutura** (o banco de dados) e a **aplicação** (o bot).
 
-1.  **Token do Bot (Variável de Ambiente):**
-    * Defina a variável de ambiente `DISCORD_BOT_TOKEN` com o token secreto do seu bot obtido no Portal de Desenvolvedores do Discord.
-    * *Exemplo Linux/macOS:* `export DISCORD_BOT_TOKEN="SEU_TOKEN_AQUI"`
-    * *Exemplo Windows (cmd):* `set DISCORD_BOT_TOKEN=SEU_TOKEN_AQUI`
-    * *Exemplo Windows (PowerShell):* `$env:DISCORD_BOT_TOKEN="SEU_TOKEN_AQUI"`
-    * Consulte a documentação do seu sistema operacional para defini-la permanentemente ou configure-a na sua IDE. **NUNCA coloque o token diretamente no código ou no arquivo `config.properties`!**
+### 1. Configuração da Infraestrutura (PostgreSQL)
 
-2.  **Arquivo de Configuração (`config.properties`):**
-    * Na raiz do projeto, você encontrará um arquivo chamado `config.properties.example`.
-    * **Copie** este arquivo e renomeie a cópia para `config.properties`.
-    * **Edite** o arquivo `config.properties` e preencha os valores necessários de acordo com os comentários no arquivo (ex: `test.guild.id`).
+Usamos um arquivo `.env` para facilitar a configuração do Docker Compose sem expor senhas.
 
-## 🛠️ Compilando (Build)
+1.  Navegue até o diretório de infraestrutura (infra).
+2.  Você encontrará um arquivo chamado `.env.example`. **Copie este arquivo** e renomeie a cópia para `.env`.
+3.  Abra o novo arquivo `infra/.env` e **defina uma senha** para `POSTGRES_PASSWORD`.
 
-Este projeto usa Maven. Para compilar o projeto e gerar o arquivo JAR executável:
+### 2. Configuração da Aplicação (Bot)
 
-1.  Abra um terminal ou prompt de comando na pasta raiz do projeto (onde está o `pom.xml`).
-2.  Execute o comando Maven:
-    ```bash
-    mvn clean package
+O bot em si precisa de suas próprias variáveis de ambiente para dados sensíveis. Elas devem ser configuradas no seu sistema ou na sua IDE, fora do projeto.
+
+**Variáveis de Ambiente Obrigatórias para o Bot:**
+
+*   `DISCORD_BOT_TOKEN`: O token de autenticação do seu bot.
+*   `DATABASE_URL`: A URL de conexão JDBC completa. Use os mesmos dados que você definiu no arquivo `infra/.env`.
+
+**Exemplo de como definir as variáveis:**
+
+*   **Linux/macOS:**
+    ```sh
+    export DISCORD_BOT_TOKEN="SEU_TOKEN_AQUI"
+    export DATABASE_URL="jdbc:postgresql://localhost:5432/<postgres_db>?user=<postgres_user>&password=<postgres_password>"
     ```
-3.  Isso irá baixar as dependências, compilar o código e criar um arquivo JAR (ex: `AstolfoBot-0.1.jar`) no diretório `target/`.
-
-## ▶️ Executando o Bot
-
-Após compilar o projeto e configurar as variáveis de ambiente:
-
-1.  Navegue até o diretório `target/` que foi criado pelo Maven.
-2.  Execute o JAR usando o Java:
-    ```bash
-    java -jar AstolfoBot-0.1.jar
+*   **Windows (PowerShell):**
+    ```shell
+    $env:DISCORD_BOT_TOKEN="SEU_TOKEN_AQUI"
+    $env:DATABASE_URL="jdbc:postgresql://localhost:5432/<postgres_db>?user=<postgres_user>&password=<postgres_password>"
     ```
-    *(Substitua `AstolfoBot-0.1.jar` pelo nome exato do JAR gerado no seu diretório `target/`)*
 
-3.  O bot tentará se conectar ao Discord. Verifique o console para mensagens de log, incluindo a mensagem de "pronto" e o status do registro de comandos.
+**Importante:** Nunca coloque o token do bot ou a `DATABASE_URL` diretamente no código ou em arquivos versionados pelo Git!
 
-## 📂 Estrutura do Projeto (Simplificada)
+## 🛠️ Executando o Projeto
 
-* `src/main/java`: Contém o código-fonte Java.
-    * `AstolfoBot.java`: Classe principal que inicializa o JDA e registra os listeners.
-    * `commands/`: Pacote contendo as implementações dos comandos Slash.
-        * `AbstractCommand.java`: Classe base para os comandos.
-        * `ping.java`: Exemplo de comando.
-    * `listeners/`: Pacote contendo classes que ouvem eventos do JDA.
-        * `ReadyListener.java`: Ouve o evento Ready e coordena a inicialização.
-        * `SlashCommandListener.java`: Ouve e processa interações de Slash Command.
+1.  **Iniciar o Banco de Dados:**
+    *   Abra um terminal e navegue até a pasta `infra/`.
+    *   Execute o comando abaixo. O Docker Compose irá ler seu arquivo `infra/.env` e iniciar o container do PostgreSQL em segundo plano.
+        ```bash
+        docker compose up -d
+        ```
+
+2.  **Compilar (Build) a Aplicação:**
+    *   Volte para o diretório raiz do projeto.
+    *   Compile e empacote a aplicação:
+        ```bash
+        mvn clean package
+        ```
+
+3.  **Executar o Bot:**
+    *   Execute o JAR gerado. A aplicação Java lerá as variáveis de ambiente (`DISCORD_BOT_TOKEN`, `DATABASE_URL`) para se conectar aos serviços.
+        ```bash
+        java -jar target/AstolfoBot-0.1.jar
+        ```
+        *(Lembre-se de substituir pelo nome exato do seu arquivo JAR)*
+
+## 📂 Estrutura do Projeto
+* **`infra`**
+  * **`docker-entrypoint-initdb.d`**
+  * **`compose.yaml`**
+  * **`.env`**
+* `src/main/java`
+    * `DiscordBot`: Classe principal.
+    * `commands/`:  Comandos Slash.
+    * `listeners/`:  Classes que ouvem eventos do JDA.
+        * `ReadyListener`: Ouve o evento Ready e coordena a inicialização.
+        * `SlashCommandListener`: Ouve e processa interações de Slash Command.
     * `handlers/`: Pacote contendo lógica de gerenciamento.
-        * `CommandHandler.java`: Responsável por carregar e registrar os comandos.
+        * `CommandHandler`: Responsável por carregar e registrar os comandos.
 * `src/main/resources`: Contém arquivos de recursos.
-    * `logback.xml`: Configuração de log.
-    * `config.properties`: Arquivo de configuração.
-* `pom.xml`: Arquivo de configuração do build tool.
-
-## 🚀 Comandos Implementados (Beta 0.1)
-
-* `/ping`: Responde "Pong!" e mostra a latência do gateway do bot.
----
+* `pom.xml`: Arquivo de configuração do build tool.  
