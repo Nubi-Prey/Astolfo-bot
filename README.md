@@ -79,10 +79,10 @@ O bot em si precisa de suas próprias variáveis de ambiente para dados sensíve
         *(Lembre-se de substituir pelo nome exato do seu arquivo JAR)*
 
 ## 📂 Estrutura do Projeto
-* **`infra`**
-  * **`docker-entrypoint-initdb.d`**
-  * **`compose.yaml`**
-  * **`.env`**
+* `infra`
+  * `docker-entrypoint-initdb.d`
+  * `compose.yaml`
+  * `.env`
 * `src/main/java`
     * `DiscordBot`: Classe principal.
     * `commands/`:  Comandos Slash.
