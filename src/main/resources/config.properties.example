@@ -10,3 +10,6 @@ test.guild.id=1234567891011
 # Define se os comandos devem ser atualizados no Discord na inicialização (onReady)
 # Padrão: true
 update.commands.on.ready=true
+
+# Define se o database será atualizado durante a inicialização [true/false]
+update.database.on.ready=true
