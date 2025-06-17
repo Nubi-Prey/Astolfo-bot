@@ -41,6 +41,7 @@ public class SlashCommandListener extends ListenerAdapter {
 
         } catch (Exception e) {
             // Captura outras exceções inesperadas
+            event.reply("Ocorreu um erro inesperado ao tentar executar o comando.").setEphemeral(true).queue();
             System.err.println("Ocorreu um erro inesperado ao tentar executar " + CommandName + ": " + e.getMessage());
         }
     }
