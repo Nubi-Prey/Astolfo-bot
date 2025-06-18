@@ -47,10 +47,15 @@ O bot em si precisa de suas próprias variáveis de ambiente para dados sensíve
     export DISCORD_BOT_TOKEN="SEU_TOKEN_AQUI"
     export DATABASE_URL="jdbc:postgresql://localhost:5432/<postgres_db>?user=<postgres_user>&password=<postgres_password>"
     ```
+*   **Windows (CMD):**
+    ```console
+    set DISCORD_BOT_TOKEN=SEU_TOKEN_AQUI
+    set DATABASE_URL=jdbc:postgresql://localhost:5432/<postgres_db>?user=<postgres_user>&password=<postgres_password>
+    ```
 *   **Windows (PowerShell):**
-    ```shell
-    $env:DISCORD_BOT_TOKEN="SEU_TOKEN_AQUI"
-    $env:DATABASE_URL="jdbc:postgresql://localhost:5432/<postgres_db>?user=<postgres_user>&password=<postgres_password>"
+    ```PowerShell
+    $env:DISCORD_BOT_TOKEN=SEU_TOKEN_AQUI
+    $env:DATABASE_URL=jdbc:postgresql://localhost:5432/<postgres_db>?user=<postgres_user>&password=<postgres_password>
     ```
 
 **Importante:** Nunca coloque o token do bot ou a `DATABASE_URL` diretamente no código ou em arquivos versionados pelo Git!
@@ -79,10 +84,10 @@ O bot em si precisa de suas próprias variáveis de ambiente para dados sensíve
         *(Lembre-se de substituir pelo nome exato do seu arquivo JAR)*
 
 ## 📂 Estrutura do Projeto
-* **`infra`**
-  * **`docker-entrypoint-initdb.d`**
-  * **`compose.yaml`**
-  * **`.env`**
+* `infra`
+  * `docker-entrypoint-initdb.d`
+  * `compose.yaml`
+  * `.env`
 * `src/main/java`
     * `DiscordBot`: Classe principal.
     * `commands/`:  Comandos Slash.
