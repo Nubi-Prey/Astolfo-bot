@@ -5,6 +5,8 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import org.reflections.Reflections;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 
@@ -21,6 +23,8 @@ public class CommandHandler {
     private final boolean TEST_MODE;
     private final String TEST_GUILD_ID;
     public List<SlashCommandData> slashCommandDatas = new ArrayList<>();
+
+    static final Logger logger = LoggerFactory.getLogger(CommandHandler.class);
 
     public CommandHandler(ConcurrentMap<String, AbstractCommand> commandRegistry, boolean TEST_MODE, String TEST_GUILD_ID){
         this.commandRegistry = commandRegistry;
@@ -57,7 +61,7 @@ public class CommandHandler {
                 slashCommandDatas.add(instance.getCommandData());
 
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                logger.error(e.getMessage());
             }
         }
     }
@@ -72,27 +76,27 @@ public class CommandHandler {
     public void updateDiscordSlashCommands(JDA jda){
 
         if(slashCommandDatas.isEmpty()){
-            System.err.println("CommandHandler -> Não foi possível atualizar os Slash Commands, certifique-se de atualizar o registro de comandos antes de atualizar os Slash Commands.");
+            logger.error("Não foi possível atualizar os Slash Commands, certifique-se de atualizar o registro de comandos antes de atualizar os Slash Commands.");
             return;
         }
 
         if(TEST_MODE){
             if(TEST_GUILD_ID == null){
-                System.err.println("CommandHandler -> TEST_MODE habilitado, porém, TEST_GUILD_ID não foi definido. Não foi possível registrar comandos de guilda.");
+                logger.error("TEST_MODE habilitado, porém, TEST_GUILD_ID não foi definido. Não foi possível registrar comandos de guilda.");
                 return;
             }
             Guild testGuild = jda.getGuildById(TEST_GUILD_ID);
 
             if (testGuild == null) {
-                System.err.println("CommandHandler -> Servidor de teste com ID '" + TEST_GUILD_ID + "' não encontrado. Não foi possível registrar comandos de guilda.");
+                logger.error("Servidor de teste com ID '{}' não encontrado. Não foi possível registrar comandos de guilda.", TEST_GUILD_ID);
                 return;
             }
 
             testGuild.updateCommands()
             .addCommands(slashCommandDatas)
             .queue(
-                    success -> System.out.println("CommandHandler -> Sucesso! " + success.size() + " comandos registrados/atualizados para o servidor de teste."),
-                    error -> System.err.println("CommandHandler -> Erro ao registrar comandos para o servidor de teste: " + error)
+                    success -> logger.info("{} comandos registrados/atualizados para o servidor de teste.", success.size()),
+                    error -> logger.error("Erro ao registrar comandos para o servidor de teste: {}", error.getMessage())
             );
 
             return;
@@ -101,8 +105,8 @@ public class CommandHandler {
         jda.updateCommands()
         .addCommands(slashCommandDatas)
         .queue(
-                success -> System.out.println("CommandHandler -> Sucesso! " + success.size() + " comandos registrados/atualizados globalmente."),
-                error -> System.err.println("CommandHandler -> Erro ao registrar comandos globais: " + error)
+                success -> logger.info("{} comandos registrados/atualizados globalmente.", success.size()),
+                error -> logger.error("Erro ao registrar comandos globais: {}", error.getMessage())
 
         );
 

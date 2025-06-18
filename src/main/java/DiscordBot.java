@@ -8,24 +8,29 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Classe principal para o bot, responsável por iniciar o bot e seus listeners.
  */
 public class DiscordBot
 {
+    static final Logger logger = LoggerFactory.getLogger(DiscordBot.class);
+
     public static void main(String[] args)
-            throws InterruptedException, ClassNotFoundException {
+            throws InterruptedException {
+
         // Procura o Token nas variáveis de ambiente
         String token = System.getenv("DISCORD_BOT_TOKEN");
 
         if (token == null || token.isEmpty()) {
-            System.err.println("Erro: Variável de ambiente DISCORD_BOT_TOKEN não foi encontrado.");
+            logger.error("Erro: Variável de ambiente DISCORD_BOT_TOKEN não foi encontrado.");
             return;
         }
 
@@ -33,13 +38,13 @@ public class DiscordBot
         Properties props = new Properties();
         try(InputStream input = DiscordBot.class.getClassLoader().getResourceAsStream("config.properties")) {
             if(input == null){
-                System.err.println("Não foi possível encontrar o arquivo de configuração config.properties. Iniciando com configurações padrão.");
+                logger.error("Não foi possível encontrar o arquivo de configuração config.properties. Iniciando com configurações padrão.");
             } else {
                 props.load(input);
             }
 
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
         }
 
         String TEST_GUILD_ID = props.getProperty("test.guild.id");

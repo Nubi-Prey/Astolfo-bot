@@ -7,6 +7,8 @@ import net.dv8tion.jda.api.entities.SelfUser;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import handlers.CommandHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,6 +22,7 @@ import java.util.List;
  * */
 public class ReadyListener extends ListenerAdapter {
 
+    static final Logger logger = LoggerFactory.getLogger(ReadyListener.class);
     private final CommandHandler commandHandler;
     private final Boolean UPDATE_COMMANDS_ON_READY;
     private final Boolean UPDATE_DATABASE_ON_READY;
@@ -36,7 +39,7 @@ public class ReadyListener extends ListenerAdapter {
 
         JDA jda = event.getJDA();
         SelfUser selfUser = jda.getSelfUser();
-        String name = selfUser.getName();
+        String bot_name = selfUser.getName();
 
         commandHandler.updateCommandRegistry();
 
@@ -67,10 +70,10 @@ public class ReadyListener extends ListenerAdapter {
 
                 db.commit();
             }catch (SQLException exception){
-                throw new RuntimeException(exception);
+                logger.error(exception.getMessage());
             }
         }
 
-        System.out.println(name + " está online e pronto!");
+        logger.info("{} está online e pronto!", bot_name);
     }
 }

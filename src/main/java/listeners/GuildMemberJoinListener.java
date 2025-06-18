@@ -5,12 +5,15 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 
 public class GuildMemberJoinListener extends ListenerAdapter {
 
     private final String url = System.getenv("DATABASE_URL");
+    static final Logger logger = LoggerFactory.getLogger(GuildMemberJoinListener.class);
 
     @Override
     public void onGuildMemberJoin( GuildMemberJoinEvent event){
@@ -30,7 +33,7 @@ public class GuildMemberJoinListener extends ListenerAdapter {
             channel_id = result.getString("welcome_channel");
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage());
         }
 
         if(channel_id == null) return;
@@ -38,7 +41,7 @@ public class GuildMemberJoinListener extends ListenerAdapter {
         TextChannel channel = guild.getTextChannelById(channel_id);
 
         if(channel == null){
-            System.out.println("TextChannel de boas-vindas não encontrado!");
+            logger.error("TextChannel de boas-vindas não encontrado!");
             return;
         }
 
