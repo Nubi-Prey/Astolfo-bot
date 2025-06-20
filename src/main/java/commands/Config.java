@@ -87,6 +87,11 @@ public class Config extends AbstractCommand {
                     continue;
                 }
 
+                if(option_name.equals("welcome_channel") && guild.getTextChannelById(option_value) == null){
+                    updates.append("> `").append(option_name).append("` recebeu um canal inválido.");
+                    continue;
+                }
+
                 PreparedStatement insert_guild_data = db.prepareStatement(
                         "INSERT INTO server_config (id, " + option_name + ") VALUES (?,?) " +
                              "ON CONFLICT (id) DO UPDATE SET " + option_name + " = EXCLUDED." + option_name + ";");
