@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "2.0",
+  "id": "astolfo-bot",
+  "repo": "Astolfo-bot",
+  "casing": "Nubi-Prey/Astolfo-bot",
+  "categoryKey": "backend",
+  "badge": "ASYNC CONCURRENCY",
+  "refLabel": "ASYNC CONCURRENCY",
+  "title": "Astolfo-bot",
+  "description": "Bot modular para Discord desenvolvido em Java 17 com JDA 5. Inclui despacho dinâmico de comandos slash, execução assíncrona desacoplada e banco PostgreSQL gerenciado via Docker Compose.",
+  "icon": "https://raw.githubusercontent.com/Nubi-Prey/Astolfo-bot/master/docs/icon.jpeg",
+  "visitLink": "https://github.com/Nubi-Prey/Astolfo-bot",
+  "tags": [
+    "Java 17+",
+    "JDA 5",
+    "PostgreSQL 16",
+    "Docker Compose",
+    "Maven",
+    "Logback"
+  ],
+  "links": {
+    "github": "https://github.com/Nubi-Prey/Astolfo-bot",
+    "releases": "https://github.com/Nubi-Prey/Astolfo-bot/releases",
+    "visit": null
+  },
+  "locales": {
+    "pt_BR": {
+      "title": "Astolfo-bot",
+      "tagline": "Bot Modular Orientado a Eventos em Java 17 e JDA 5",
+      "category": "Backend & DevOps",
+      "badge": "ASYNC CONCURRENCY",
+      "refLabel": "ASYNC CONCURRENCY",
+      "description": "Bot modular para Discord desenvolvido em Java 17 com JDA 5. Inclui despacho dinâmico de comandos slash, execução assíncrona desacoplada e banco PostgreSQL gerenciado via Docker Compose.",
+      "tags": [
+        "Java 17+",
+        "JDA 5",
+        "PostgreSQL 16",
+        "Docker Compose",
+        "Maven",
+        "Logback"
+      ],
+      "highlights": [
+        "Despachante CommandHandler para registro e execução dinâmica de Slash Commands",
+        "Banco PostgreSQL 16 provisionado com Docker Compose",
+        "Configuração por variáveis de ambiente e logs estruturados com Logback"
+      ]
+    },
+    "en_US": {
+      "title": "Astolfo-bot",
+      "tagline": "Modular Event-Driven Discord Bot in Java 17 and JDA 5",
+      "category": "Backend & DevOps",
+      "badge": "ASYNC CONCURRENCY",
+      "refLabel": "ASYNC CONCURRENCY",
+      "description": "Modular Discord bot written in Java 17 using JDA 5. Features dynamic slash command dispatching, asynchronous task execution, and PostgreSQL database managed with Docker Compose.",
+      "tags": [
+        "Java 17+",
+        "JDA 5",
+        "PostgreSQL 16",
+        "Docker Compose",
+        "Maven",
+        "Logback"
+      ],
+      "highlights": [
+        "CommandHandler dispatcher for dynamic Slash Command registration and routing",
+        "PostgreSQL 16 database instance managed with Docker Compose",
+        "Environment-variable configuration and structured logging via Logback"
+      ]
+    }
+  }
+}
